@@ -20,6 +20,7 @@ router.put('/profile', checkIfLoggedIn, (req, res, next) => {
 			next(err);
 		});
 });
+
 router.get('/favourites', checkIfLoggedIn, (req, res, next) => {
 	const user = req.session.currentUser;
 	User.findById(user)
@@ -28,6 +29,22 @@ router.get('/favourites', checkIfLoggedIn, (req, res, next) => {
 		.then(userFounded => {
 			res.json({ favourites: userFounded.favouriteRecipes });
 		})
+		.catch(err => {
+			next(err);
+		});
+});
+
+router.delete('/favourites/:id', checkIfLoggedIn, (req, res, next) => {
+	const user = req.session.currentUser;
+	const { id } = req.params;
+	// eslint-disable-next-line no-underscore-dangle
+	User.findById(user._id)
+		// eslint-disable-next-line no-shadow
+		.then(user => {
+			user.favouriteRecipes.splice(id, 1);
+			return user.save();
+		})
+		.then(deletedRecipe => res.json({ recipe: deletedRecipe }))
 		.catch(err => {
 			next(err);
 		});
