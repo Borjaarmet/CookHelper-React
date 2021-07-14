@@ -1,52 +1,14 @@
 /* eslint-disable no-underscore-dangle */
 const express = require('express');
+const { getAllRecipes, getRecipeDetails, pushRecipeToFavourite, createRecipe } = require('../controllers/recipes');
 const { checkIfLoggedIn } = require('../middlewares');
-const Recipe = require('../models/recipe');
-const User = require('../models/User');
 
 const router = express.Router();
 
-router.get('/', checkIfLoggedIn, (req, res) => {
-	Recipe.find().then(recipes => {
-		res.json({ recipes });
-	});
-});
-
-router.get('/:id/details', checkIfLoggedIn, (req, res, next) => {
-	Recipe.findById(req.params.id)
-		.then(foundedRecipe => {
-			res.json({ recipe: foundedRecipe });
-		})
-		.catch(err => {
-			next(err);
-		});
-});
-
-router.post('/:id/details', checkIfLoggedIn, (req, res, next) => {
-	const user = req.session.currentUser;
-	const { id } = req.params;
-	User.findById(user._id)
-		// eslint-disable-next-line no-shadow
-		.then(user => {
-			if (user.favouriteRecipes.includes(id) === true) {
-				res.json('this recipe is already in your list');
-				return;
-			}
-			user.favouriteRecipes.push(id);
-			user.save();
-			res.json({ recipe: id });
-		})
-		.catch(err => {
-			next(err);
-		});
-});
-
-router.post('/', checkIfLoggedIn, (req, res) => {
-	const { recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink } = req.body;
-	Recipe.create({ recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink }).then(recipe => {
-		res.json({ recipeCreated: recipe });
-	});
-});
+router.get('/', checkIfLoggedIn, getAllRecipes);
+router.get('/:id/details', checkIfLoggedIn, getRecipeDetails);
+router.post('/:id/details', checkIfLoggedIn, pushRecipeToFavourite);
+router.post('/', checkIfLoggedIn, createRecipe);
 
 // router.put('/:id', checkIfLoggedIn, (req, res) => {
 // 	const { id } = req.params;
