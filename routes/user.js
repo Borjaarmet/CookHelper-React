@@ -1,7 +1,6 @@
 const express = require('express');
 const { checkIfLoggedIn } = require('../middlewares');
 const User = require('../models/User');
-// const Recipe = require('../models/recipe');
 
 const router = express.Router();
 
@@ -10,7 +9,7 @@ router.get('/profile', checkIfLoggedIn, (req, res) => {
 	res.json({ user });
 });
 
-router.post('/profile', checkIfLoggedIn, (req, res, next) => {
+router.put('/profile', checkIfLoggedIn, (req, res, next) => {
 	const { _id } = req.session.currentUser;
 	const { username, email, nationality, age, cookLevel } = req.body;
 	User.findByIdAndUpdate(_id, { username, email, nationality, age, cookLevel }, { new: true })
