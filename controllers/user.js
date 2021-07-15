@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Recipe = require('../models/recipe');
 
 const getUserInSession = (req, res) => {
 	const user = req.session.currentUser;
@@ -38,6 +39,19 @@ const getUserFavouritesRecipes = (req, res, next) => {
 		});
 };
 
+const createdRecipe = (req, res) => {
+	const user = req.session.currentUser;
+	const { recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink } = req.body;
+  User.findById(user).then(user => {
+    Recipe.create({ recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink }).then(recipe => {
+		user.createdRecipes.push(recipe);
+		user.save();
+		res.json({ recipeToCreatedRecipes: recipe });
+	});
+  })
+	
+};
+
 const deletedRecipeFromFav = (req, res, next) => {
 	const user = req.session.currentUser;
 	const { id } = req.params;
@@ -60,4 +74,5 @@ module.exports = {
 	getUpdatedProfile,
 	getUserFavouritesRecipes,
 	deletedRecipeFromFav,
+	createdRecipe,
 };

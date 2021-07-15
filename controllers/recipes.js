@@ -37,10 +37,20 @@ const pushRecipeToFavourite = (req, res, next) => {
 		});
 };
 
-const createRecipe = (req, res) => {
+const updateRecipe = (req, res) => {
+	const { id } = req.params;
 	const { recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink } = req.body;
-	Recipe.create({ recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink }).then(recipe => {
-		res.json({ recipeCreated: recipe });
+	Recipe.findByIdAndUpdate(
+		id,
+		{ recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink },
+		{ new: true }
+	).then(Recipeupdated => {
+		// if (Recipeupdated === null) {
+		// 	return res.status(404).json({ error: 'Recipe not founded' });
+		// }
+		return res.json({
+			updatedRecipe: Recipeupdated,
+		});
 	});
 };
 
@@ -48,5 +58,5 @@ module.exports = {
 	getAllRecipes,
 	getRecipeDetails,
 	pushRecipeToFavourite,
-	createRecipe,
+	updateRecipe,
 };
