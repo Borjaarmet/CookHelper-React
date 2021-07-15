@@ -8,6 +8,7 @@ const {
 	deletedRecipeFromFav,
 	createdRecipe,
 	getUserCreatedRecipes,
+	deletedRecipeFromCreatedList,
 } = require('../controllers/user');
 
 const router = express.Router();
@@ -17,7 +18,7 @@ router.get('/:id/profile', checkIfLoggedIn, getUserProfile);
 router.put('/profile', checkIfLoggedIn, getUpdatedProfile);
 router.get('/profile/create', checkIfLoggedIn, getUserCreatedRecipes);
 router.post('/profile/create', checkIfLoggedIn, createdRecipe);
-router.delete('/profile/create', checkIfLoggedIn, createdRecipe);
+router.delete('/profile/:id', checkIfLoggedIn, deletedRecipeFromCreatedList);
 router.get('/favourites', checkIfLoggedIn, getUserFavouritesRecipes);
 router.delete('/favourites/:id', checkIfLoggedIn, deletedRecipeFromFav);
 
