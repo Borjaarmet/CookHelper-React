@@ -23,6 +23,7 @@ const userSchema = new Schema(
 			required: [true, 'Password is required'],
 		},
 		favouriteRecipes: [{ type: Schema.Types.ObjectId, ref: 'Recipe' }],
+		createdRecipes: [String],
 		nationality: { type: String },
 		age: { type: Number },
 	},
