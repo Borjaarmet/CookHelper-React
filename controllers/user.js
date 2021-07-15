@@ -39,17 +39,29 @@ const getUserFavouritesRecipes = (req, res, next) => {
 		});
 };
 
+const getUserCreatedRecipes = (req, res, next) => {
+	const user = req.session.currentUser;
+	User.findById(user)
+
+		.then(userFounded => {
+			res.json({ created: userFounded.createdRecipes });
+		})
+		.catch(err => {
+			next(err);
+		});
+};
+
 const createdRecipe = (req, res) => {
 	const user = req.session.currentUser;
 	const { recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink } = req.body;
-  User.findById(user).then(user => {
-    Recipe.create({ recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink }).then(recipe => {
-		user.createdRecipes.push(recipe);
-		user.save();
-		res.json({ recipeToCreatedRecipes: recipe });
+	// eslint-disable-next-line no-shadow
+	User.findById(user).then(user => {
+		Recipe.create({ recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink }).then(recipe => {
+			user.createdRecipes.push(recipe);
+			user.save();
+			res.json({ recipeToCreatedRecipes: recipe });
+		});
 	});
-  })
-	
 };
 
 const deletedRecipeFromFav = (req, res, next) => {
@@ -74,5 +86,6 @@ module.exports = {
 	getUpdatedProfile,
 	getUserFavouritesRecipes,
 	deletedRecipeFromFav,
+	getUserCreatedRecipes,
 	createdRecipe,
 };
