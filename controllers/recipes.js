@@ -45,9 +45,6 @@ const updateRecipe = (req, res) => {
 		{ recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink },
 		{ new: true }
 	).then(Recipeupdated => {
-		// if (Recipeupdated === null) {
-		// 	return res.status(404).json({ error: 'Recipe not founded' });
-		// }
 		return res.json({
 			updatedRecipe: Recipeupdated,
 		});
