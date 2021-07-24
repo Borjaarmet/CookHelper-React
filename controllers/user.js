@@ -54,9 +54,9 @@ const getUserCreatedRecipes = (req, res, next) => {
 
 const createRecipe = async (req, res) => {
 	const loggedInUser = req.session.currentUser;
-	const { recipename, difficulty, TimeToCook, ingredientsList, Steps, videoLink } = req.body;
+	const { recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink } = req.body;
 	// eslint-disable-next-line no-shadow
-	const recipe = await Recipe.create({ recipename, difficulty, TimeToCook, ingredientsList, Steps, videoLink });
+	const recipe = await Recipe.create({ recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink });
 	const user = await User.findById(loggedInUser);
 	// eslint-disable-next-line no-underscore-dangle
 	user.createdRecipes.push(recipe);
