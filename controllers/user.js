@@ -42,6 +42,7 @@ const getUserFavouritesRecipes = (req, res, next) => {
 const getUserCreatedRecipes = (req, res, next) => {
 	const user = req.session.currentUser;
 	User.findById(user)
+		.populate('createdRecipes')
 
 		.then(userFounded => {
 			res.json({ created: userFounded.createdRecipes });
@@ -51,17 +52,16 @@ const getUserCreatedRecipes = (req, res, next) => {
 		});
 };
 
-const createdRecipe = (req, res) => {
-	const user = req.session.currentUser;
-	const { recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink } = req.body;
+const createRecipe = async (req, res) => {
+	const loggedInUser = req.session.currentUser;
+	const { recipename, difficulty, TimeToCook, ingredientsList, Steps, videoLink } = req.body;
 	// eslint-disable-next-line no-shadow
-	User.findById(user).then(user => {
-		Recipe.create({ recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink }).then(recipe => {
-			user.createdRecipes.push(recipe);
-			user.save();
-			res.json({ recipeToCreatedRecipes: recipe });
-		});
-	});
+	const recipe = await Recipe.create({ recipename, difficulty, TimeToCook, ingredientsList, Steps, videoLink });
+	const user = await User.findById(loggedInUser);
+	// eslint-disable-next-line no-underscore-dangle
+	user.createdRecipes.push(recipe);
+	user.save();
+	res.json({ newRecipe: recipe });
 };
 
 const deletedRecipeFromCreatedList = (req, res, next) => {
@@ -79,6 +79,23 @@ const deletedRecipeFromCreatedList = (req, res, next) => {
 			next(err);
 		});
 };
+
+// const updateRecipe = async (req, res, next) => {
+// 	const loggedInUser = req.session.currentUser;
+// 	const { recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink } = req.body;
+// 	const { id } = req.params;
+// 	// eslint-disable-next-line no-underscore-dangle
+// 	const user = await User.findById(loggedInUser);
+// 	const recipe = await Recipe.findByIdAndUpdate(
+// 		id,
+// 		{ recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink },
+// 		{ new: true }
+// 	);
+// 	const data = res.json({recipeUpdated: recipe})
+// 		.catch(err => {
+// 			next(err);
+// 		});
+// };
 
 const deletedRecipeFromFav = (req, res, next) => {
 	const user = req.session.currentUser;
@@ -103,6 +120,7 @@ module.exports = {
 	getUserFavouritesRecipes,
 	deletedRecipeFromFav,
 	getUserCreatedRecipes,
-	createdRecipe,
+	createRecipe,
 	deletedRecipeFromCreatedList,
+	// updateRecipe,
 };

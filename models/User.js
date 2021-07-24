@@ -26,7 +26,6 @@ const userSchema = new Schema(
 		createdRecipes: [{ type: Schema.Types.ObjectId, ref: 'Recipe' }],
 		nationality: { type: String },
 		age: { type: Number },
-		picture: { type: String },
 	},
 	{
 		timestamps: {
