@@ -57,7 +57,8 @@ const createRecipe = async (req, res) => {
 	const { recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink } = req.body;
 	// eslint-disable-next-line no-shadow
 	const recipe = await Recipe.create({ recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink });
-	const user = await User.findById(loggedInUser);
+	// eslint-disable-next-line no-underscore-dangle
+	const user = await User.findById(loggedInUser._id);
 	// eslint-disable-next-line no-underscore-dangle
 	user.createdRecipes.push(recipe);
 	user.save();
