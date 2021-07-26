@@ -9,5 +9,6 @@ router.get('/whoami', getWhoAmI);
 router.post('/signup', checkUsernameAndPasswordNotEmpty, getUserSignup);
 router.post('/login', checkUsernameAndPasswordNotEmpty, getUserLogin);
 router.get('/logout', getUserLogout);
+// router.put('/')
 
 module.exports = router;
