@@ -28,7 +28,8 @@ const getUpdatedProfile = (req, res, next) => {
 
 const getUserFavouritesRecipes = (req, res, next) => {
 	const user = req.session.currentUser;
-	User.findById(user)
+	// eslint-disable-next-line no-underscore-dangle
+	User.findById(user._id)
 		.populate('favouriteRecipes')
 
 		.then(userFounded => {
@@ -41,7 +42,8 @@ const getUserFavouritesRecipes = (req, res, next) => {
 
 const getUserCreatedRecipes = (req, res, next) => {
 	const user = req.session.currentUser;
-	User.findById(user)
+	// eslint-disable-next-line no-underscore-dangle
+	User.findById(user._id)
 		.populate('createdRecipes')
 
 		.then(userFounded => {
