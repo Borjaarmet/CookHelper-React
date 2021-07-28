@@ -37,6 +37,36 @@ const pushRecipeToFavourite = (req, res, next) => {
 		});
 };
 
+const deletedRecipeFromFav = async (req, res) => {
+	const loggedInUser = req.session.currentUser;
+	const { id } = req.params;
+	try {
+		// eslint-disable-next-line no-underscore-dangle
+		const user = await User.findById(loggedInUser._id);
+		// eslint-disable-next-line no-shadow
+		// eslint-disable-next-line no-underscore-dangle
+		const recipe = await Recipe.findById(id._id);
+		user.favouriteRecipes.splice(recipe, 1);
+		user.save();
+		res.json({ deletedRecipe: recipe });
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+// const createRecipe = async (req, res) => {
+// 	const loggedInUser = req.session.currentUser;
+// 	const { recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink } = req.body;
+// 	// eslint-disable-next-line no-shadow
+// 	const recipe = await Recipe.create({ recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink });
+// 	// eslint-disable-next-line no-underscore-dangle
+// 	const user = await User.findById(loggedInUser._id);
+// 	// eslint-disable-next-line no-underscore-dangle
+// 	user.createdRecipes.push(recipe);
+// 	user.save();
+// 	res.json({ newRecipe: recipe });
+// };
+
 const updateRecipe = (req, res) => {
 	const { id } = req.params;
 	const { recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink } = req.body;
@@ -55,5 +85,6 @@ module.exports = {
 	getAllRecipes,
 	getRecipeDetails,
 	pushRecipeToFavourite,
+	deletedRecipeFromFav,
 	updateRecipe,
 };

@@ -5,7 +5,7 @@ const {
 	getUserProfile,
 	getUpdatedProfile,
 	getUserFavouritesRecipes,
-	deletedRecipeFromFav,
+	// deletedRecipeFromFav,
 	createRecipe,
 	getUserCreatedRecipes,
 	deletedRecipeFromCreatedList,
@@ -22,6 +22,6 @@ router.post('/create', checkIfLoggedIn, createRecipe);
 // router.put('/create/:id', checkIfLoggedIn, updatedRecipe);
 router.delete('/create/:id', checkIfLoggedIn, deletedRecipeFromCreatedList);
 router.get('/favourites', checkIfLoggedIn, getUserFavouritesRecipes);
-router.delete('/favourites/:id', checkIfLoggedIn, deletedRecipeFromFav);
+// router.delete('/favourites/:id', checkIfLoggedIn, deletedRecipeFromFav);
 
 module.exports = router;
