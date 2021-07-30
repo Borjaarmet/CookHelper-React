@@ -67,22 +67,7 @@ const createRecipe = async (req, res) => {
 	res.json({ newRecipe: recipe });
 };
 
-const deletedRecipeFromCreatedList = (req, res, next) => {
-	const user = req.session.currentUser;
-	const { id } = req.params;
-	console.log('req params:', id);
-	// eslint-disable-next-line no-underscore-dangle
-	User.findById(user._id)
-		// eslint-disable-next-line no-shadow
-		.then(user => {
-			user.createdRecipes.splice(id, 1);
-			return user.save();
-		})
-		.then(recipe => res.json({ deletedRecipe: recipe }))
-		.catch(err => {
-			next(err);
-		});
-};
+
 
 // const updateRecipe = async (req, res, next) => {
 // 	const loggedInUser = req.session.currentUser;
@@ -122,9 +107,7 @@ module.exports = {
 	getUserProfile,
 	getUpdatedProfile,
 	getUserFavouritesRecipes,
-	// deletedRecipeFromFav,
 	getUserCreatedRecipes,
 	createRecipe,
-	deletedRecipeFromCreatedList,
 	// updateRecipe,
 };

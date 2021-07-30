@@ -40,20 +40,37 @@ const pushRecipeToFavourite = (req, res, next) => {
 const deletedRecipeFromFav = async (req, res) => {
 	const loggedInUser = req.session.currentUser;
 	const { id } = req.params;
+	console.log(req.params);
 	try {
 		// eslint-disable-next-line no-underscore-dangle
 		const user = await User.findById(loggedInUser._id);
 		// eslint-disable-next-line no-shadow
 		// eslint-disable-next-line no-underscore-dangle
-		const recipe = await Recipe.findById(id._id);
+		const recipe = await Recipe.findById(id);
 		user.favouriteRecipes.splice(recipe, 1);
 		user.save();
+		res.session.currentUser = user;
 		res.json({ deletedRecipe: recipe });
 	} catch (error) {
 		console.log(error);
 	}
 };
 
+const deletedRecipeFromCreatedList = (req, res, next) => {
+	const user = req.session.currentUser;
+	const { id } = req.params;
+	// eslint-disable-next-line no-underscore-dangle
+	User.findById(user._id)
+		// eslint-disable-next-line no-shadow
+		.then(user => {
+			user.createdRecipes.splice(id, 1);
+			return user.save();
+		})
+		.then(recipe => res.json({ deletedRecipe: recipe }))
+		.catch(err => {
+			next(err);
+		});
+};
 // const createRecipe = async (req, res) => {
 // 	const loggedInUser = req.session.currentUser;
 // 	const { recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink } = req.body;
@@ -86,5 +103,6 @@ module.exports = {
 	getRecipeDetails,
 	pushRecipeToFavourite,
 	deletedRecipeFromFav,
+	deletedRecipeFromCreatedList,
 	updateRecipe,
 };
