@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/', getAllRecipes);
 router.get('/:id/details', checkIfLoggedIn, getRecipeDetails);
 router.post('/:id/details', checkIfLoggedIn, pushRecipeToFavourite);
-router.delete('/favourites/:id', checkIfLoggedIn, deletedRecipeFromFav);
+router.put('/favourites/:id', checkIfLoggedIn, deletedRecipeFromFav);
 router.put('/:id', checkIfLoggedIn, updateRecipe);
 
 module.exports = router;

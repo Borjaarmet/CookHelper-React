@@ -6,7 +6,7 @@ const recipeSchema = new Schema({
 	recipeName: { type: String },
 	difficulty: { type: String },
 	TimeToCook: { type: Number },
-	ingredientsList: [String],
+	ingredientsList: [{ type: String }],
 	Steps: [String],
 	videoLink: { type: String },
 });

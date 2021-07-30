@@ -40,15 +40,18 @@ const pushRecipeToFavourite = (req, res, next) => {
 const deletedRecipeFromFav = async (req, res) => {
 	const loggedInUser = req.session.currentUser;
 	const { id } = req.params;
+	console.log(req.params);
 	try {
 		// eslint-disable-next-line no-underscore-dangle
 		const user = await User.findById(loggedInUser._id);
 		// eslint-disable-next-line no-shadow
 		// eslint-disable-next-line no-underscore-dangle
-		const recipe = await Recipe.findById(id._id);
-		user.favouriteRecipes.splice(recipe, 1);
+		// const recipe = await Recipe.findById(id);
+		const index = user.favouriteRecipes.indexOf(id);
+		user.favouriteRecipes.splice(index, 1);
 		user.save();
-		res.json({ deletedRecipe: recipe });
+		req.session.currentUser = user;
+		res.json({ status: 'success', deletedRecipe: id });
 	} catch (error) {
 		console.log(error);
 	}
