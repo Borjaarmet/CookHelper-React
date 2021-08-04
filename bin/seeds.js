@@ -178,7 +178,7 @@ const recipes = [
     recipeName: "Mom's Baked Macaroni and Cheese",
     difficulty: 'easy',
     TimeToCook: 40,
-    ingredientsList: ['macaroni', 'Emmentaler cheese', 'milk', 'Cheddar cheese'],
+    ingredientsList: ['macarroni', 'Emmentaler cheese', 'milk', 'Cheddar cheese'],
     Steps: [
       'Step 1:Preheat oven to 350 degrees F (175 degrees C). Bring a large pot of lightly salted water to a boil. Add pasta and cook for 8 to 10 minutes or until al dente; drain.',
 
