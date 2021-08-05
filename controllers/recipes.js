@@ -46,7 +46,6 @@ const deletedRecipeFromFav = async (req, res) => {
 		const user = await User.findById(loggedInUser._id);
 		// eslint-disable-next-line no-shadow
 		// eslint-disable-next-line no-underscore-dangle
-		// const recipe = await Recipe.findById(id);
 		const index = user.favouriteRecipes.indexOf(id);
 		user.favouriteRecipes.splice(index, 1);
 		user.save();
@@ -72,32 +71,6 @@ const deletedRecipeFromCreatedList = (req, res, next) => {
 			next(err);
 		});
 };
-// const createRecipe = async (req, res) => {
-// 	const loggedInUser = req.session.currentUser;
-// 	const { recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink } = req.body;
-// 	// eslint-disable-next-line no-shadow
-// 	const recipe = await Recipe.create({ recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink });
-// 	// eslint-disable-next-line no-underscore-dangle
-// 	const user = await User.findById(loggedInUser._id);
-// 	// eslint-disable-next-line no-underscore-dangle
-// 	user.createdRecipes.push(recipe);
-// 	user.save();
-// 	res.json({ newRecipe: recipe });
-// };
-
-const updateRecipe = (req, res) => {
-	const { id } = req.params;
-	const { recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink } = req.body;
-	Recipe.findByIdAndUpdate(
-		id,
-		{ recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink },
-		{ new: true }
-	).then(Recipeupdated => {
-		return res.json({
-			updatedRecipe: Recipeupdated,
-		});
-	});
-};
 
 module.exports = {
 	getAllRecipes,
@@ -105,5 +78,5 @@ module.exports = {
 	pushRecipeToFavourite,
 	deletedRecipeFromFav,
 	deletedRecipeFromCreatedList,
-	updateRecipe,
+
 };

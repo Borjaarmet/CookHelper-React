@@ -67,40 +67,19 @@ const createRecipe = async (req, res) => {
 	res.json({ newRecipe: recipe });
 };
 
-
-
-// const updateRecipe = async (req, res, next) => {
-// 	const loggedInUser = req.session.currentUser;
-// 	const { recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink } = req.body;
-// 	const { id } = req.params;
-// 	// eslint-disable-next-line no-underscore-dangle
-// 	const user = await User.findById(loggedInUser);
-// 	const recipe = await Recipe.findByIdAndUpdate(
-// 		id,
-// 		{ recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink },
-// 		{ new: true }
-// 	);
-// 	const data = res.json({recipeUpdated: recipe})
-// 		.catch(err => {
-// 			next(err);
-// 		});
-// };
-
-// const deletedRecipeFromFav = (req, res, next) => {
-// 	const user = req.session.currentUser;
-// 	const { id } = req.params.id;
-// 	// eslint-disable-next-line no-underscore-dangle
-// 	User.findById(user)
-// 		// eslint-disable-next-line no-shadow
-// 		.then(user => {
-// 			user.favouriteRecipes.splice(id, 1);
-// 			return user.save();
-// 		})
-// 		.then(recipe => res.json({ deletedRecipe: recipe }))
-// 		.catch(err => {
-// 			next(err);
-// 		});
-// };
+const updateRecipe = (req, res) => {
+	const { id } = req.params;
+	console.log("id:", id)
+	const { recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink } = req.body;
+	Recipe.findByIdAndUpdate(
+		id,
+		{ recipeName, difficulty, TimeToCook, ingredientsList, Steps, videoLink },
+		{ new: true }
+	).then(newRecipe => {
+		console.log("newrecipe:", newRecipe)
+		res.json({ updatedRecipe: newRecipe });
+	});
+};
 
 module.exports = {
 	getUserInSession,
@@ -109,5 +88,5 @@ module.exports = {
 	getUserFavouritesRecipes,
 	getUserCreatedRecipes,
 	createRecipe,
-	// updateRecipe,
+	updateRecipe,
 };
